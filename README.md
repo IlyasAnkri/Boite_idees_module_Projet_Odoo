@@ -1,3 +1,4 @@
+Ilyas ANKRI G2 5IIR
 # Boite Idees Odoo Module
 
 This Odoo module provides functionality for managing ideas (Boîte à Idées). It allows users to submit, view, and manage ideas within an Odoo system.
