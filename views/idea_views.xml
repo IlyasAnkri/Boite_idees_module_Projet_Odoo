@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_idea_form" model="ir.ui.view">
+        <field name="name">idea.box.form</field>
+        <field name="model">idea.box</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Confirmer l'idée" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_done" string="Marquer comme Fait" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_cancel" string="Annuler" type="object" invisible="state == 'cancelled'"/>
+                    
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_vote" type="object" class="oe_stat_button" icon="fa-thumbs-up">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="vote_count"/></span>
+                                <span class="o_stat_text">Votes</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Titre de l'idée..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="author"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="submission_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_idea_kanban" model="ir.ui.view">
+        <field name="name">idea.box.kanban</field>
+        <field name="model">idea.box</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="true">
+                <field name="state"/>
+                <field name="vote_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click oe_kanban_card">
+                            <div class="oe_kanban_content">
+                                <strong><field name="name"/></strong>
+                                <br/>
+                                <span class="text-muted"><field name="author"/></span>
+                                <div class="mt-2">
+                                    <span class="badge rounded-pill text-bg-info"><field name="category"/></span>
+                                    <span class="float-end text-success">
+                                        <i class="fa fa-thumbs-up"/> <field name="vote_count"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_idea_graph" model="ir.ui.view">
+        <field name="name">idea.box.graph</field>
+        <field name="model">idea.box</field>
+        <field name="arch" type="xml">
+            <graph string="Statistiques des Idées" type="bar">
+                <field name="category"/>
+                <field name="vote_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_idea_tree" model="ir.ui.view">
+        <field name="name">idea.box.tree</field>
+        <field name="model">idea.box</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'done'" decoration-info="state == 'confirmed'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="author"/>
+                <field name="category"/>
+                <field name="vote_count" sum="Total"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'confirmed'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_idea_box" model="ir.actions.act_window">
+        <field name="name">Boîte à Idées</field>
+        <field name="res_model">idea.box</field>
+        <field name="view_mode">kanban,tree,form,graph</field>
+    </record>
+
+    <menuitem id="menu_idea_root" name="Boîte à Idées" sequence="10"/>
+    <menuitem id="menu_idea_main" name="Tableau de Bord" parent="menu_idea_root" action="action_idea_box" sequence="10"/>
+
+</odoo>

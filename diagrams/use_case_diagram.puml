@@ -1,0 +1,26 @@
+@startuml Diagramme de Cas d'Utilisation - Boîte à Idées
+
+left to right direction
+
+actor "Utilisateur" as User
+actor "Administrateur" as Admin
+
+rectangle "Boîte à Idées" {
+    usecase "Créer une idée" as UC1
+    usecase "Voter pour une idée" as UC2
+    usecase "Consulter les idées" as UC3
+    usecase "Modifier une idée" as UC4
+    usecase "Changer le statut d'une idée" as UC5
+    usecase "Voir les statistiques" as UC6
+    usecase "Gérer les catégories" as UC7
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+
+@enduml
